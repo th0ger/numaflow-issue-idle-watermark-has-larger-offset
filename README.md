@@ -1,5 +1,7 @@
 # Numaflow Issue: The idle watermark has a larger offset from the head idle watermark
 
+Minimal reproducible example for numaflow issue [#2569](https://github.com/numaproj/numaflow/issues/2569).
+
 ## Prerequisites
 
 `kind`, `kubectl`, `skaffold`
