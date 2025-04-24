@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: numaflow-demo
+resourceSelector:
+  allow: # Enable skaffold to substitute image tags in numaflow pipelines
+    - groupKind: "Pipeline.numaflow.numaproj.io"
+      image: [".*"]
+      labels: [".*"]
+build:
+  artifacts:
+    - image: sample_mapper
+      context: samplemapper
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - pipeline.yaml
+deploy:
+  kubectl: {}

@@ -1,0 +1,73 @@
+apiVersion: numaflow.numaproj.io/v1alpha1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  watermark:
+    maxDelay: 10s
+    # disabled: true
+  limits:
+    readBatchSize: 1
+
+  vertices:
+  - name: input1
+    source:
+        generator:
+          rpu: 1
+          duration: 1s
+    scale:
+      min: 1
+      max: 1
+
+  - name: input2
+    source:
+        generator:
+          rpu: 1
+          duration: 2s
+    scale:
+      min: 1
+      max: 1
+
+  - name: samplemapper
+    partitions: 1
+    udf:
+      container:
+        image: sample_mapper
+    scale:
+      min: 1
+      max: 1
+
+  - name: output
+    sink:
+      blackhole: {}
+
+  - name: log-input1
+    sink:
+      log: {}
+
+  - name: log-input2
+    sink:
+      log: {}
+
+  - name: log-output
+    sink:
+      log: {}
+
+  edges:
+  - from: input1
+    to: samplemapper
+
+  - from: input2
+    to: samplemapper
+
+  - from: samplemapper
+    to: output
+
+  - from: input1
+    to: log-input1
+
+  - from: input2
+    to: log-input2
+
+  - from: samplemapper
+    to: log-output
