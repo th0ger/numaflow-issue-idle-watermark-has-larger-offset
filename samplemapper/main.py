@@ -9,6 +9,8 @@ class MyMapper(Mapper):
         messages = Messages()
         if self.count % 5 == 0:
             messages.append(Message(keys=[], value=f"count={self.count}".encode()))
+        else:
+            messages.append(Message.to_drop())
         print(f"handler: count={self.count}, output={messages}, input={datum}")
         self.count += 1
         return messages
